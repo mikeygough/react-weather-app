@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
+import WeatherDisplay from '../DisplayWeather/DisplayWeather';
+
 export default function Weather() {
   const [zip, setZip] = useState('');
   const [weather, setWeather] = useState(null);
@@ -63,9 +65,7 @@ export default function Weather() {
   };
 
   return (
-    <div>
-      <h1>Weather Forecast</h1>
-
+    <div className="Weather">
       <section>
         <form onSubmit={handleSubmit}>
           <input
@@ -84,22 +84,8 @@ export default function Weather() {
         {error && <p>{error}</p>}
       </section>
 
-      {weather && (
-        <section>
-          <h2>Weather for {weather.name}</h2>
-
-          <div>
-            <h3>Current Conditions</h3>
-            <div>
-              <p>Temperature: {weather.main.temp}°C</p>
-              <p>Feels like: {weather.main.feels_like}°C</p>
-              <p>
-                Conditions: {weather.weather[0].main},{' '}
-                {weather.weather[0].description}
-              </p>
-            </div>
-          </div>
-        </section>
+      {!loading && !error && weather && (
+        <WeatherDisplay weather={weather} />
       )}
     </div>
   );
