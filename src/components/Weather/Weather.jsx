@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
-import WeatherDisplay from '../DisplayWeather/DisplayWeather';
+import WeatherDisplay from '../DisplayWeather/WeatherDisplay';
+
+import './Weather.css';
 
 export default function Weather() {
   const [zip, setZip] = useState('');
+  const [temperatureUnit, setTemperatureUnit] = useState('metric');
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,11 +39,11 @@ export default function Weather() {
 
       const geoData = await geoResponse.json();
       const { lat, lon } = geoData;
-      // console.log(lat, lon);
 
       // fetch weather from coordinates
       const weatherResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+        // `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${temperatureUnit}&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${temperatureUnit}&appid=${apiKey}`
       );
 
       if (!weatherResponse.ok) {
@@ -49,7 +52,7 @@ export default function Weather() {
 
       const weatherData = await weatherResponse.json();
       setWeather(weatherData);
-      // console.log(weatherData);
+      console.log(weatherData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -64,17 +67,42 @@ export default function Weather() {
     }
   };
 
+  const handleTemperatureUnitChange = (event) => {
+    setTemperatureUnit(event.target.value);
+  };
+
   return (
     <div className="Weather">
       <section>
-        <form onSubmit={handleSubmit}>
+        <form className="Weather__form" onSubmit={handleSubmit}>
+          <label for="zip">Enter Zip Code</label>
           <input
+            id="zip"
             type="text"
-            placeholder="Enter ZIP Code"
             onChange={handleZipChange}
             value={zip}
             aria-label="ZIP Code"
           />
+          <label>
+            <input
+              type="radio"
+              value="metric"
+              name="radioGroup"
+              checked={temperatureUnit === 'metric'}
+              onChange={handleTemperatureUnitChange}
+            />
+            Metric
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="imperial"
+              name="radioGroup"
+              checked={temperatureUnit === 'imperial'}
+              onChange={handleTemperatureUnitChange}
+            />
+            Imperial
+          </label>
           <button type="submit" disabled={zip.length < 5 || loading}>
             {loading ? 'Loading...' : 'Get Weather'}
           </button>
@@ -85,7 +113,10 @@ export default function Weather() {
       </section>
 
       {!loading && !error && weather && (
-        <WeatherDisplay weather={weather} />
+        <WeatherDisplay
+          weather={weather}
+          temperatureUnit={temperatureUnit}
+        />
       )}
     </div>
   );

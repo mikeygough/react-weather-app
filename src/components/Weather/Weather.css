@@ -1,0 +1,33 @@
+.Weather {
+  position: relative;
+}
+
+.Weather__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  font-size: 3rem;
+}
+
+.Weather__form * {
+  font-size: inherit;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  margin: 0.5rem;
+}
+
+.Weather__form label {
+  font-size: 2rem;
+  text-align: left;
+}
+
+.Weather__form input {
+  padding: var(--form-input-padding);
+  opacity: 75%;
+}
+
+.Weather__form button {
+  padding: calc(var(--form-input-padding) * 3);
+}
