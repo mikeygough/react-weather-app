@@ -5,29 +5,39 @@
 .Weather__form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-
-  font-size: 3rem;
+  font-size: 1rem;
 }
 
 .Weather__form * {
-  font-size: inherit;
   border: none;
   border-radius: 5px;
   text-align: center;
-  margin: 0.5rem;
 }
 
 .Weather__form label {
-  font-size: 2rem;
   text-align: left;
 }
 
 .Weather__form input {
   padding: var(--form-input-padding);
-  opacity: 75%;
+  margin: 0.5rem;
 }
 
 .Weather__form button {
-  padding: calc(var(--form-input-padding) * 3);
+  padding: var(--form-input-padding);
+  margin: 0.5rem;
+}
+
+.Weather__form__textInput {
+  display: flex;
+}
+
+.Weather__form__radioInput {
+  display: flex;
+  margin-top: 0.5rem;
+  justify-content: space-evenly;
+}
+
+.Weather__form__radioInput input {
+  margin: 0.5rem;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -22,43 +22,53 @@ export default function Weather() {
   };
 
   // get data
-  const fetchWeatherData = async (zipCode) => {
-    setLoading(true);
-    setError(null);
-    setWeather(null);
+  const fetchWeatherData = useCallback(
+    async (zipCode) => {
+      setLoading(true);
+      setError(null);
+      setWeather(null);
 
-    try {
-      // fetch coordinates from ZIP
-      const geoResponse = await fetch(
-        `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${apiKey}`
-      );
+      try {
+        // fetch coordinates from ZIP
+        const geoResponse = await fetch(
+          `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${apiKey}`
+        );
 
-      if (!geoResponse.ok) {
-        throw new Error('Could not find location for this ZIP code');
+        if (!geoResponse.ok) {
+          throw new Error(
+            'Could not find location for this ZIP code'
+          );
+        }
+
+        const geoData = await geoResponse.json();
+        const { lat, lon } = geoData;
+
+        // fetch weather from coordinates
+        const weatherResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${temperatureUnit}&appid=${apiKey}`
+        );
+
+        if (!weatherResponse.ok) {
+          throw new Error('Weather data not available');
+        }
+
+        const weatherData = await weatherResponse.json();
+        setWeather(weatherData);
+        console.log(weatherData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
+    },
+    [temperatureUnit]
+  );
 
-      const geoData = await geoResponse.json();
-      const { lat, lon } = geoData;
-
-      // fetch weather from coordinates
-      const weatherResponse = await fetch(
-        // `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${temperatureUnit}&appid=${apiKey}`
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${temperatureUnit}&appid=${apiKey}`
-      );
-
-      if (!weatherResponse.ok) {
-        throw new Error('Weather data not available');
-      }
-
-      const weatherData = await weatherResponse.json();
-      setWeather(weatherData);
-      console.log(weatherData);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (zip.length === 5) {
+      fetchWeatherData(zip);
     }
-  };
+  }, [fetchWeatherData, zip, temperatureUnit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,52 +82,62 @@ export default function Weather() {
   };
 
   return (
-    <div className="Weather">
-      <section>
-        <form className="Weather__form" onSubmit={handleSubmit}>
-          <label for="zip">Enter Zip Code</label>
-          <input
-            id="zip"
-            type="text"
-            onChange={handleZipChange}
-            value={zip}
-            aria-label="ZIP Code"
-          />
-          <label>
-            <input
-              type="radio"
-              value="metric"
-              name="radioGroup"
-              checked={temperatureUnit === 'metric'}
-              onChange={handleTemperatureUnitChange}
-            />
-            Metric
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="imperial"
-              name="radioGroup"
-              checked={temperatureUnit === 'imperial'}
-              onChange={handleTemperatureUnitChange}
-            />
-            Imperial
-          </label>
-          <button type="submit" disabled={zip.length < 5 || loading}>
-            {loading ? 'Loading...' : 'Get Weather'}
-          </button>
-        </form>
+    <>
+      <div className="Weather">
+        <section>
+          <form className="Weather__form" onSubmit={handleSubmit}>
+            <div className="Weather__form__textInput">
+              <input
+                id="zip"
+                type="text"
+                onChange={handleZipChange}
+                value={zip}
+                placeholder="zip code"
+                aria-label="ZIP Code"
+              />
+              <button
+                type="submit"
+                disabled={zip.length < 5 || loading}
+              >
+                {loading ? 'Loading...' : 'get the forecast'}
+              </button>
+            </div>
 
-        {loading && <p>Loading weather data...</p>}
-        {error && <p>{error}</p>}
-      </section>
+            <div className="Weather__form__radioInput">
+              <label>
+                <input
+                  type="radio"
+                  value="metric"
+                  name="radioGroup"
+                  checked={temperatureUnit === 'metric'}
+                  onChange={handleTemperatureUnitChange}
+                />
+                metric
+              </label>
 
+              <label>
+                <input
+                  type="radio"
+                  value="imperial"
+                  name="radioGroup"
+                  checked={temperatureUnit === 'imperial'}
+                  onChange={handleTemperatureUnitChange}
+                />
+                imperial
+              </label>
+            </div>
+          </form>
+
+          {loading && <p>Loading weather data...</p>}
+          {error && <p>{error}</p>}
+        </section>
+      </div>
       {!loading && !error && weather && (
         <WeatherDisplay
           weather={weather}
           temperatureUnit={temperatureUnit}
         />
       )}
-    </div>
+    </>
   );
 }

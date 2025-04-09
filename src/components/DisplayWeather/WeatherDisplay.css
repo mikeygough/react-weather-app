@@ -1,8 +1,19 @@
 .WeatherDisplay {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* gap: 1rem; */
+  margin-top: 0.5rem;
 }
 
-.WeatherDisplay__content {
+.WeatherDisplay__day {
   display: flex;
   flex-direction: column;
-  padding: var(--form-input-padding);
+  padding: calc(var(--form-input-padding) * 3);
+}
+
+.WeatherDisplay__day:not(:last-child) {
+  border-right: 0.5px solid black;
+}
+
+.WeatherDisplay__day__card {
 }
