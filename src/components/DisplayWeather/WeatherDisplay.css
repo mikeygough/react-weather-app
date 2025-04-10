@@ -1,19 +1,20 @@
+.WeatherDisplayContainer {
+  margin-top: 1rem;
+}
+
 .WeatherDisplay {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  /* gap: 1rem; */
+  gap: 2rem;
   margin-top: 0.5rem;
+}
+
+.WeatherDisplay__header {
+  text-align: center;
 }
 
 .WeatherDisplay__day {
   display: flex;
   flex-direction: column;
   padding: calc(var(--_padding) * 3);
-}
-
-.WeatherDisplay__day:not(:last-child) {
-  border-right: 0.5px solid black;
-}
-
-.WeatherDisplay__day__card {
 }

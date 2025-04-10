@@ -23,7 +23,7 @@ export default function Weather() {
 
   // get data
   const fetchWeatherData = useCallback(
-    async (zipCode) => {
+    async (zip) => {
       setLoading(true);
       setError(null);
       setWeather(null);
@@ -31,7 +31,7 @@ export default function Weather() {
       try {
         // fetch coordinates from ZIP
         const geoResponse = await fetch(
-          `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${apiKey}`
+          `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${apiKey}`
         );
 
         if (!geoResponse.ok) {
@@ -54,7 +54,6 @@ export default function Weather() {
 
         const weatherData = await weatherResponse.json();
         setWeather(weatherData);
-        console.log(weatherData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -75,10 +74,13 @@ export default function Weather() {
   };
 
   return (
-    <>
-      <div className="Weather">
+    <div className="WeatherContainer">
+      <div className="Weather__form__container">
         <section>
-          <form className="Weather__form">
+          <form
+            className="Weather__form"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <div className="Weather__form__textInput">
               <input
                 id="zip"
@@ -115,16 +117,20 @@ export default function Weather() {
             </div>
           </form>
 
-          {loading && <p>Loading weather data...</p>}
-          {error && <p>{error}</p>}
+          <div className="Weather__form__states">
+            {loading && <p>Loading weather data...</p>}
+            {error && <p>{error}</p>}
+          </div>
         </section>
       </div>
-      {!loading && !error && weather && (
-        <WeatherDisplay
-          weather={weather}
-          temperatureUnit={temperatureUnit}
-        />
-      )}
-    </>
+      <div className="Weather__results__container">
+        {!loading && !error && weather && (
+          <WeatherDisplay
+            weather={weather}
+            temperatureUnit={temperatureUnit}
+          />
+        )}
+      </div>
+    </div>
   );
 }

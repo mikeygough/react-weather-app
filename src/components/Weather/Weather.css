@@ -1,17 +1,13 @@
-.Weather {
-  position: relative;
-}
-
 .Weather__form {
   display: flex;
   flex-direction: column;
   font-size: 1rem;
+  align-items: center;
 }
 
 .Weather__form * {
-  border: none;
-  border-radius: 5px;
-  text-align: center;
+  border-radius: var(--_radius);
+  font-size: 1.5rem;
 }
 
 .Weather__form label {
@@ -21,15 +17,9 @@
 .Weather__form input {
   padding: var(--_padding);
   margin: 0.5rem;
-}
-
-.Weather__form button {
-  padding: var(--_padding);
-  margin: 0.5rem;
-}
-
-.Weather__form__textInput {
-  display: flex;
+  border: 1px solid hsl(var(--accent));
+  text-align: center;
+  caret-color: transparent;
 }
 
 .Weather__form__radioInput {
@@ -40,4 +30,9 @@
 
 .Weather__form__radioInput input {
   margin: 0.5rem;
+}
+
+.Weather__form__states {
+  text-align: center;
+  margin-top: 1rem;
 }

@@ -64,16 +64,17 @@ export default function WeatherDisplay({ weather, temperatureUnit }) {
   };
 
   const dailyForecast = getDailyForecast(weather.list);
-  console.log(weather);
   return (
-    <>
-      <h2 className="WeatherDisplay__header">{weather.city.name}</h2>
+    <div className="WeatherDisplayContainer">
+      <h1 className="WeatherDisplay__header">
+        {weather.city.name} Weather Forecast
+      </h1>
       <div className="WeatherDisplay">
         {dailyForecast.map((day, index) => (
           <div key={index} className="WeatherDisplay__day">
-            <h3 className="WeatherDisplay__day__header">
+            <h2 className="WeatherDisplay__day__header">
               {days[new Date(day.date).getDay()]}
-            </h3>
+            </h2>
 
             {day.morning && (
               <div className="WeatherDisplay__day__card">
@@ -116,6 +117,6 @@ export default function WeatherDisplay({ weather, temperatureUnit }) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
