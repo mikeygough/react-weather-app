@@ -8,7 +8,7 @@
 .WeatherDisplay__day {
   display: flex;
   flex-direction: column;
-  padding: calc(var(--form-input-padding) * 3);
+  padding: calc(var(--_padding) * 3);
 }
 
 .WeatherDisplay__day:not(:last-child) {

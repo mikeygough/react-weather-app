@@ -70,13 +70,6 @@ export default function Weather() {
     }
   }, [fetchWeatherData, zip, temperatureUnit]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (zip.length === 5) {
-      fetchWeatherData(zip);
-    }
-  };
-
   const handleTemperatureUnitChange = (event) => {
     setTemperatureUnit(event.target.value);
   };
@@ -85,7 +78,7 @@ export default function Weather() {
     <>
       <div className="Weather">
         <section>
-          <form className="Weather__form" onSubmit={handleSubmit}>
+          <form className="Weather__form">
             <div className="Weather__form__textInput">
               <input
                 id="zip"
@@ -95,12 +88,6 @@ export default function Weather() {
                 placeholder="zip code"
                 aria-label="ZIP Code"
               />
-              <button
-                type="submit"
-                disabled={zip.length < 5 || loading}
-              >
-                {loading ? 'Loading...' : 'get the forecast'}
-              </button>
             </div>
 
             <div className="Weather__form__radioInput">

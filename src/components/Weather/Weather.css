@@ -19,12 +19,12 @@
 }
 
 .Weather__form input {
-  padding: var(--form-input-padding);
+  padding: var(--_padding);
   margin: 0.5rem;
 }
 
 .Weather__form button {
-  padding: var(--form-input-padding);
+  padding: var(--_padding);
   margin: 0.5rem;
 }
 

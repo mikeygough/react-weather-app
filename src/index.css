@@ -1,3 +1,4 @@
+/* Josh Comeau css reset, thanks Josh! */
 *,
 *::before,
 *::after {
@@ -62,11 +63,48 @@ h6 {
   isolation: isolate;
 }
 
-* {
-  --form-input-padding: 0.5rem;
-  font-family: Arial, Helvetica, sans-serif;
+
+:root {
+  --_hue: 245;
+  --_radius: 0.2em;
+  --_padding: 0.5rem
+
+  /* Light Mode */
+  --bg--light: var(--_hue) 30% 94%;
+  --txt--light: var(--_hue) 40% 5%;
+  --accent--light: var(--_hue) 55% 50%;
+  --muted--light: var(--_hue) 30% 99%;
+  /* Dark Mode */
+  --bg--dark: var(--_hue) 15% 10%;
+  --txt--dark: var(--_hue) 30% 88%;
+  --accent--dark: var(--_hue) 50% 50%;
+  --muted--dark: var(--_hue) 20% 4%;
+
+  --bg: var(--bg--light);
+  --txt: var(--txt--light);
+  --accent: var(--accent--light);
+  --muted: var(--muted--light);
+  color-scheme: light;
 }
 
-html {
-  background-color: skyblue;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--bg--dark);
+    --txt: var(--txt--dark);
+    --accent: var(--accent--dark);
+    --muted: var(--muted--dark);
+    color-scheme: dark;
+  }
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--bg));
+  color: hsl(var(--txt));
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.8);
+  color: hsl(var(--bg));
 }
