@@ -16,5 +16,5 @@
 .WeatherDisplay__day {
   display: flex;
   flex-direction: column;
-  padding: calc(var(--_padding) * 3);
+  padding: 1rem;
 }

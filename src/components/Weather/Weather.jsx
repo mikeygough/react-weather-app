@@ -73,6 +73,9 @@ export default function Weather() {
     setTemperatureUnit(event.target.value);
   };
 
+  const shouldDisplay =
+    !loading && !error && weather && zip.length >= 5;
+
   return (
     <div className="WeatherContainer">
       <div className="Weather__form__container">
@@ -124,12 +127,18 @@ export default function Weather() {
         </section>
       </div>
       <div className="Weather__results__container">
-        {!loading && !error && weather && (
-          <WeatherDisplay
-            weather={weather}
-            temperatureUnit={temperatureUnit}
-          />
-        )}
+        <div
+          className={`Weather__results__animation__container ${
+            shouldDisplay ? 'open' : ''
+          }`}
+        >
+          {shouldDisplay && (
+            <WeatherDisplay
+              weather={weather}
+              temperatureUnit={temperatureUnit}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
